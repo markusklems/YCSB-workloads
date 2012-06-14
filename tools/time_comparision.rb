@@ -32,6 +32,10 @@ logger.info "You have #{config_files.size} configuration files (ending .properti
 config_files.each {|config_file| logger.info "-- #{config_file}"}
 logger.info "-----------------------------------------------------------------------------------------"
 
+logger.info "---------------------------------------------------"
+logger.info "Log file is #{ENV['HOME']}/time_comparision_log.txt"
+File.open("#{ENV['HOME']}/time_comparision_log.txt","w") {}
+logger.info "---------------------------------------------------"
 
 mode = "dumy"
 until ["B","I","Q"].include? mode
@@ -53,12 +57,18 @@ if mode == "B"
 	logger.info "All configuration files will be used ONE BY ONE"  
 	logger.info "-----------------------------------------------"
 
+	log_file = File.open("#{ENV['HOME']}/time_comparision_log.txt","a")
+
 	config_files.each do |config_file|
 		logger.info "------------------"
 		logger.info "USE: #{config_file}"		
 		logger.info "------------------"
+		
+		log_file << "BATCH MODE - USE CONFIG FILE: #{config_file}"
 
 		beginning = Time.now
+		log_file << "BATCH MODE - BEGINNING - #{beginning}"
+
 		logger.info "Now: #{beginning}"
 		config_file_path = config_dir << "/" << config_file
 
@@ -66,31 +76,43 @@ if mode == "B"
 		logger.info "Step 1: LAUNCHING cluster..."		
 		logger.info "----------------------------"
 		system "#{whirr}/bin/whirr launch-cluster --config=#{config_file_path}"
+		log_file << "BATCH MODE - LAUNCH - #{Time.now}"
+		log_file << "BATCH MODE - Until now, time elapsed: #{Time.now - beginning} seconds"		
 		logger.info "::: Until now, time elapsed: #{Time.now - beginning} seconds"		
 		
 		logger.info "----------------------------------------------"
 		logger.info "Step 2.1.: Running experiment, action: LOAD..."		
 		logger.info "----------------------------------------------"
 		system "#{whirr}/bin/whirr run-experiment --config=#{config_file_path} --ycsb-experiment-action=load"
+		log_file << "BATCH MODE - LOAD - #{Time.now}"
+		log_file << "BATCH MODE - Until now, time elapsed: #{Time.now - beginning} seconds"
 		logger.info "Until now, time elapsed: #{Time.now - beginning} seconds"	
 
 		logger.info "---------------------------------------------"
 		logger.info "Step 2.2.: Running experiment, action: RUN..."		
 		logger.info "---------------------------------------------"
 		system "#{whirr}/bin/whirr run-experiment --config=#{config_file_path} --ycsb-experiment-action=run"
+		log_file << "BATCH MODE - RUN - #{Time.now}"
+		log_file << "BATCH MODE - Until now, time elapsed: #{Time.now - beginning} seconds"
 		logger.info "Until now, time elapsed: #{Time.now - beginning} seconds"	
 
 		logger.info "------------------------------------------------"
 		logger.info "Step 2.3.: Running experiment, action: UPLOAD..."		
 		logger.info "------------------------------------------------"
 		system "#{whirr}/bin/whirr run-experiment --config=#{config_file_path} --ycsb-experiment-action=upload"
+		log_file << "BATCH MODE - UPLOAD - #{Time.now}"
+		log_file << "BATCH MODE - Until now, time elapsed: #{Time.now - beginning} seconds"		
 		logger.info "Until now, time elapsed: #{Time.now - beginning} seconds"	
 
 		logger.info "-----------------------------"
 		logger.info "Step 3: DESTROYING cluster..."		
 		logger.info "-----------------------------"
 		system "#{whirr}/bin/whirr destroy-cluster --config=#{config_file_path}"
-		logger.info "Until now, time elapsed: #{Time.now - beginning} seconds"	
+		log_file << "BATCH MODE - DESTROY - #{Time.now}"
+		log_file << "BATCH MODE - Until now, time elapsed: #{Time.now - beginning} seconds"		
+		logger.info "Until now, time elapsed: #{Time.now - beginning} seconds"
+
+		log_file.close	
 	end
   
 elsif mode == "I"
@@ -101,18 +123,22 @@ elsif mode == "I"
 	logger.info "Make sure that your properties file NAMES are INCREMENTAL, e.g. ycsb1.properites, ycsb2.properites, etc." 
 	logger.info "--------------------------------------------------------------------------------------------------------"
   
+	log_file = File.open("#{ENV['HOME']}/time_comparision_log.txt","a")
+
 	logger.info "-------------------------"
 	logger.info "Get the first config file"
 	logger.info "-------------------------"
 	first_config_file = config_files.shift
-	logger.info "---------------------------------------"
-	logger.info "FIRST CONFIG FILE: #{first_config_file}"	
-	logger.info "---------------------------------------"
+	logger.info "-----------------------------------------------------------------------"
+	logger.info "FIRST CONFIG FILE: #{first_config_file}"
+	log_file << "INCREMENTAL MODE - FIRST CONFIG - USE CONFIG FILE: #{first_config_file}"	
+	logger.info "-----------------------------------------------------------------------"
 
 	logger.info "-----------------------------------------------"
 	logger.info "Step 1: Run the FIRST config file in BATCH mode"
 	logger.info "-----------------------------------------------"
 	beginning = Time.now
+	log_file << "INCREMENTAL MODE - FIRST CONFIG - BEGINNING - #{beginning}"	
 	logger.info "Now: #{beginning}"
 	first_config_file_path = config_dir << "/" << first_config_file
 
@@ -120,24 +146,32 @@ elsif mode == "I"
 	logger.info "Step 1.1.: LAUNCHING cluster..."		
 	logger.info "-------------------------------"
 	system "#{whirr}/bin/whirr launch-cluster --config=#{first_config_file_path}"
+	log_file << "INCREMENTAL MODE - FIRST CONFIG - LAUNCH - #{Time.now}"
+	log_file << "INCREMENTAL MODE - FIRST CONFIG - Until now, time elapsed: #{Time.now - beginning} seconds"
 	logger.info "::: Until now, time elapsed: #{Time.now - beginning} seconds"		
 		
 	logger.info "----------------------------------------------"
 	logger.info "Step 1.2.: Running experiment, action: LOAD..."		
 	logger.info "----------------------------------------------"
 	system "#{whirr}/bin/whirr run-experiment --config=#{first_config_file_path} --ycsb-experiment-action=load"
+	log_file << "INCREMENTAL MODE - FIRST CONFIG - LOAD - #{Time.now}"
+	log_file << "INCREMENTAL MODE - FIRST CONFIG - Until now, time elapsed: #{Time.now - beginning} seconds"
 	logger.info "Until now, time elapsed: #{Time.now - beginning} seconds"	
 
 	logger.info "---------------------------------------------"
 	logger.info "Step 1.3.: Running experiment, action: RUN..."		
 	logger.info "---------------------------------------------"
 	system "#{whirr}/bin/whirr run-experiment --config=#{first_config_file_path} --ycsb-experiment-action=run"
+	log_file << "INCREMENTAL MODE - FIRST CONFIG - RUN - #{Time.now}"
+	log_file << "INCREMENTAL MODE - FIRST CONFIG - Until now, time elapsed: #{Time.now - beginning} seconds"	
 	logger.info "Until now, time elapsed: #{Time.now - beginning} seconds"	
 
 	logger.info "------------------------------------------------"
 	logger.info "Step 1.4.: Running experiment, action: UPLOAD..."		
 	logger.info "------------------------------------------------"
 	system "#{whirr}/bin/whirr run-experiment --config=#{first_config_file_path} --ycsb-experiment-action=upload"
+	log_file << "INCREMENTAL MODE - FIRST CONFIG - UPLOAD - #{Time.now}"
+	log_file << "INCREMENTAL MODE - FIRST CONFIG - Until now, time elapsed: #{Time.now - beginning} seconds"	
 	logger.info "Until now, time elapsed: #{Time.now - beginning} seconds"	
 
 	logger.info "-------------------------------------------------------------------------------------------------"
@@ -146,34 +180,44 @@ elsif mode == "I"
 	config_files.each do |config_file|
 		logger.info "-------------------"
 		logger.info "USE: #{config_file}"
+		log_file << "INCREMENTAL MODE - OTHER CONFIGS - USE CONFIG FILE: #{config_file}"
 		logger.info "-------------------"
 		
 		beginning = Time.now
 		logger.info "Now: #{beginning}"
+		log_file << "INCREMENTAL MODE - OTHER CONFIGS - BEGINNING: #{beginning}"
 		config_file_path = config_dir << "/" << config_file
 
 		logger.info "-------------------------------"
 		logger.info "Step 2.1.: REPAIRING cluster..."		
 		logger.info "-------------------------------"
 		system "#{whirr}/bin/whirr repair-cluster --config=#{config_file_path}"
+		log_file << "INCREMENTAL MODE - OTHER CONFIGS - REPAIR - #{Time.now}"
+		log_file << "INCREMENTAL MODE - OTHER CONFIGS - Until now, time elapsed: #{Time.now - beginning} seconds"
 		logger.info "::: Until now, time elapsed: #{Time.now - beginning} seconds"	
 
 		logger.info "----------------------------------------------"
 		logger.info "Step 2.2.: Running experiment, action: LOAD..."		
 		logger.info "----------------------------------------------"
 		system "#{whirr}/bin/whirr run-experiment --config=#{config_file_path} --ycsb-experiment-action=load"
+		log_file << "INCREMENTAL MODE - OTHER CONFIGS - LOAD - #{Time.now}"
+		log_file << "INCREMENTAL MODE - OTHER CONFIGS - Until now, time elapsed: #{Time.now - beginning} seconds"
 		logger.info "Until now, time elapsed: #{Time.now - beginning} seconds"	
 
 		logger.info "---------------------------------------------"
 		logger.info "Step 2.3.: Running experiment, action: RUN..."		
 		logger.info "---------------------------------------------"
 		system "#{whirr}/bin/whirr run-experiment --config=#{config_file_path} --ycsb-experiment-action=run"
+		log_file << "INCREMENTAL MODE - OTHER CONFIGS - RUN - #{Time.now}"
+		log_file << "INCREMENTAL MODE - OTHER CONFIGS - Until now, time elapsed: #{Time.now - beginning} seconds"		
 		logger.info "Until now, time elapsed: #{Time.now - beginning} seconds"	
 
 		logger.info "------------------------------------------------"
 		logger.info "Step 2.4.: Running experiment, action: UPLOAD..."		
 		logger.info "------------------------------------------------"
 		system "#{whirr}/bin/whirr run-experiment --config=#{config_file_path} --ycsb-experiment-action=upload"
+		log_file << "INCREMENTAL MODE - OTHER CONFIGS - UPLOAD - #{Time.now}"
+		log_file << "INCREMENTAL MODE - OTHER CONFIGS - Until now, time elapsed: #{Time.now - beginning} seconds"		
 		logger.info "Until now, time elapsed: #{Time.now - beginning} seconds"	
 	end
 	
@@ -189,8 +233,11 @@ elsif mode == "I"
 	logger.info "---------------------"
 	
 	system "#{whirr}/bin/whirr destroy-cluster --config=#{last_config_file_path}"
+	log_file << "INCREMENTAL MODE - OTHER CONFIGS - DESTROY - #{Time.now}"
+	log_file << "INCREMENTAL MODE - OTHER CONFIGS - Until now, time elapsed: #{Time.now - beginning} seconds"	
 	logger.info "::: Until now, time elapsed: #{Time.now - beginning} seconds"	
 
+	log_file.close
 elsif mode == "Q"
   logger.info "---------------------"
   logger.info "OK, you want to quit!"
