@@ -126,37 +126,13 @@ phase2.alpha=0.5
 # ******** #
 # PHASE 3  #
 # ******** #
-# used for bar chart
 phase3.index=3
-
-# load=yes --> loading phase
-# load=no --> transaction phase
 phase3.load=no
-
 phase3.operationcount=100000
 phase3.threadcount=6
 phase3.target=600
-
-# debug=true --> verbose info
-# debug=false --> compact info
 phase3.debug=false
-
-# request distribution model
 phase3.requestdistribution=veryhotspot
-
-# parameters for hotspot distribution
-
-# how many hotspots
 phase3.hotspots=20
-
-# variance of hotspots which is used for the Dirichlet distribution
-# low variance --> All hotspots have equally popularities (entropy ~1)
-# high variace --> Some hotspots have dominated popularities (entropy ~0)
 phase3.variance=0.01
-
-# concentration parameter alpha which is used for the Chinese Restaurant Process
-# 0 < alpha < 1
-# alpha defines how likely a hotspot takes a new cluster
-# low alpha --> small chance to take a new cluster
-# big alpha --> big chance to take a new cluster
 phase3.alpha=0.5
