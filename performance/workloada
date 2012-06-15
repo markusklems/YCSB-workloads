@@ -37,3 +37,5 @@ requestdistribution=zipfian
 
 
 hosts=10.208.199.164,10.208.117.160
+
+hosts=10.46.209.70,10.200.245.18
