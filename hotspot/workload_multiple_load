@@ -1,0 +1,82 @@
+# ATTENTION
+# this properties file is used to do LOADS for the database
+# the recordcount of this file has to be MATCHED with the recordcount of "workload_multiple_transaction"
+
+# =============================================== #
+# GENERAL PARAMETERS
+# =============================================== #
+
+# define the location of the target database                                                                                                                                                                   
+hosts=127.0.0.1
+
+# during the LOADING phase
+# how many "rowkeys" should be inserted into the database
+# each rowkey contains 10 "columns"
+# recordcount defines, how many times the doInsert() [HotspotWorkload] will be invoked
+recordcount=100
+
+# readallfields=true --> read all key/value pairs within a row key
+# readallfields=false --> read only one key/value pair within a row key
+readallfields=false
+
+# insertorder=ordered --> the names of row keys are selected as ORDERED, e,g. 0,1,2,3,4....
+# insertorder=hashed --> the names of row keys are selected as RANDOM, e.g. 4134132,66,221...
+insertorder=ordered
+
+# the path in system for the generated bar chart
+chartPath=/home/lehoanganh
+
+# =============================================== #
+# MULTIPLE CLIENTS
+# =============================================== #
+
+# the location of the ZooKeeper Server
+# should be on the same machine where the YCSB client is running
+#barrier-zkServer=127.0.0.1
+
+# name spaces
+#barrier-zkRoot=/ycsb-multiclient
+
+# status always yes
+#barrier-status=yes
+
+# how many clients will the barrier wait for
+#barrier-size=1
+
+# =============================================== #
+# MULTIPLE PHASES
+# =============================================== #
+
+# how many phases
+phases=1
+
+# ******** #
+# PHASE 1  #
+# ******** #
+# used for bar chart
+phase1.index=1
+
+# load=yes --> loading phase
+# load=no --> transaction phase
+phase1.load=yes
+
+phase1.recordcount=100
+phase1.operationcount=100
+phase1.threadcount=5
+
+# ratios of opration types within the total benchmark
+# summarize of all ratios = 1.0 (100%)
+phase1.readproportion=1.0
+phase1.updateproportion=0
+phase1.scanproportion=0
+phase1.insertproportion=0
+
+# debug=true --> verbose info
+# debug=false --> compact info
+phase1.debug=false
+
+# Workload Executor
+phase1.workload=com.yahoo.ycsb.workloads.HotspotWorkload
+
+# request distribution model
+phase1.requestdistribution=zipfian
