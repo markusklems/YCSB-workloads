@@ -6,8 +6,11 @@
 # GENERAL PARAMETERS
 # =============================================== #
 
+measurementtype=timeseries
+timeseries.granularity=10000
+
 # define the location of the target database                                                                                                                                                                   
-hosts=127.0.0.1
+hosts=
 
 # during the LOADING phase
 # how many "rowkeys" should be inserted into the database
