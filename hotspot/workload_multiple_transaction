@@ -1,0 +1,249 @@
+# ATTENTION
+# this properties file is used to do TRANSACTIONS for the database
+# the recordcount of this file has to be MATCHED with the recordcount of workload_multiple_load
+
+# =============================================== #
+# GENERAL PARAMETERS
+# =============================================== #
+
+measurementtype=timeseries
+timeseries.granularity=10000
+
+# define the location of the target database                                                                                                                                                                   
+hosts=
+
+# during the LOADING phase
+# how many "rowkeys" should be inserted into the database
+# each rowkey contains 10 "columns"
+# recordcount defines, how many times the doInsert() [HotspotWorkload] will be invoked
+recordcount=1000000
+
+# readallfields=true --> read all key/value pairs within a row key
+# readallfields=false --> read only one key/value pair within a row key
+readallfields=false
+
+# insertorder=ordered --> the names of row keys are selected as ORDERED, e,g. 0,1,2,3,4....
+# insertorder=hashed --> the names of row keys are selected as RANDOM, e.g. 4134132,66,221...
+insertorder=ordered
+
+# the path in system for the generated bar chart
+chartPath=/home/users/markus
+
+# =============================================== #
+# MULTIPLE CLIENTS
+# =============================================== #
+
+# the location of the ZooKeeper Server
+# should be on the same machine where the YCSB client is running
+#barrier-zkServer=127.0.0.1
+
+# name spaces
+#barrier-zkRoot=/ycsb-multiclient
+
+# status always yes
+#barrier-status=yes
+
+# how many clients will the barrier wait for
+#barrier-size=1
+
+# =============================================== #
+# MULTIPLE PHASES
+# =============================================== #
+
+# global parameters
+
+readproportion=0.5
+updateproportion=0.5
+scanproportion=0
+insertproportion=0
+
+# Workload Executor
+# workload=com.yahoo.ycsb.workloads.HotspotWorkload
+
+# how many phases
+phases=12
+
+# ******** #
+# PHASE 1  #
+# ******** #
+# used for bar chart
+phase1.index=1
+
+# load=yes --> loading phase
+# load=no --> transaction phase
+phase1.load=no
+
+phase1.operationcount=1000000
+phase1.threadcount=5
+phase1.target=500
+
+# debug=true --> verbose info
+# debug=false --> compact info
+phase1.debug=false
+
+# Workload Executor
+phase1.workload=com.yahoo.ycsb.workloads.HotspotWorkload
+
+# request distribution model
+phase1.requestdistribution=zipfian
+
+# ******** #
+# PHASE 2  #
+# ******** #
+# used for bar chart
+phase2.index=2
+
+# load=yes --> loading phase
+# load=no --> transaction phase
+phase2.load=no
+
+phase2.operationcount=100000
+phase2.threadcount=5
+phase2.target=500
+
+# debug=true --> verbose info
+# debug=false --> compact info
+phase2.debug=false
+
+phase2.workload=com.yahoo.ycsb.workloads.HotspotWorkload
+
+
+# request distribution model
+phase2.requestdistribution=veryhotspot
+
+# parameters for hotspot distribution
+
+# how many hotspots
+phase2.hotspots=20
+
+# variance of hotspots which is used for the Dirichlet distribution
+# low variance --> All hotspots have equally popularities (entropy ~1)
+# high variace --> Some hotspots have dominated popularities (entropy ~0)
+phase2.variance=0.01
+
+# concentration parameter alpha which is used for the Chinese Restaurant Process
+# 0 < alpha < 1
+# alpha defines how likely a hotspot takes a new cluster
+# low alpha --> small chance to take a new cluster
+# big alpha --> big chance to take a new cluster
+phase2.alpha=0.5
+
+# ******** #
+# PHASE 3  #
+# ******** #
+phase3.index=3
+phase3.load=no
+phase3.operationcount=100000
+phase3.threadcount=6
+phase3.target=600
+phase3.debug=false
+phase3.workload=com.yahoo.ycsb.workloads.HotspotWorkload
+phase3.requestdistribution=veryhotspot
+phase3.hotspots=20
+phase3.variance=0.01
+phase3.alpha=0.5
+
+phase4.index=4
+phase4.load=no
+phase4.operationcount=100000
+phase4.threadcount=6
+phase4.target=700
+phase4.debug=false
+phase4.workload=com.yahoo.ycsb.workloads.HotspotWorkload
+phase4.requestdistribution=veryhotspot
+phase4.hotspots=20
+phase4.variance=0.01
+phase4.alpha=0.5
+
+phase5.index=5
+phase5.load=no
+phase5.operationcount=100000
+phase5.threadcount=6
+phase5.target=800
+phase5.debug=false
+phase5.workload=com.yahoo.ycsb.workloads.HotspotWorkload
+phase5.requestdistribution=veryhotspot
+phase5.hotspots=20
+phase5.variance=0.01
+phase5.alpha=0.5
+
+phase6.index=6
+phase6.load=no
+phase6.operationcount=100000
+phase6.threadcount=6
+phase6.target=900
+phase6.debug=false
+phase6.workload=com.yahoo.ycsb.workloads.HotspotWorkload
+phase6.requestdistribution=veryhotspot
+phase6.hotspots=20
+phase6.variance=0.01
+phase6.alpha=0.5
+
+phase7.index=7
+phase7.load=no
+phase7.operationcount=100000
+phase7.threadcount=6
+phase7.target=1000
+phase7.debug=false
+phase7.workload=com.yahoo.ycsb.workloads.HotspotWorkload
+phase7.requestdistribution=veryhotspot
+phase7.hotspots=20
+phase7.variance=0.01
+phase7.alpha=0.5
+
+phase8.index=8
+phase8.load=no
+phase8.operationcount=100000
+phase8.threadcount=6
+phase8.target=900
+phase8.debug=false
+phase8.workload=com.yahoo.ycsb.workloads.HotspotWorkload
+phase8.requestdistribution=veryhotspot
+phase8.hotspots=20
+phase8.variance=0.01
+phase8.alpha=0.5
+
+phase9.index=9
+phase9.load=no
+phase9.operationcount=100000
+phase9.threadcount=6
+phase9.target=800
+phase9.debug=false
+phase9.workload=com.yahoo.ycsb.workloads.HotspotWorkload
+phase9.requestdistribution=veryhotspot
+phase9.hotspots=20
+phase9.variance=0.01
+phase9.alpha=0.5
+
+phase10.index=10
+phase10.load=no
+phase10.operationcount=100000
+phase10.threadcount=6
+phase10.target=700
+phase10.debug=false
+phase10.workload=com.yahoo.ycsb.workloads.HotspotWorkload
+phase10.requestdistribution=veryhotspot
+phase10.hotspots=20
+phase10.variance=0.01
+phase10.alpha=0.5
+
+phase11.index=11
+phase11.load=no
+phase11.operationcount=100000
+phase11.threadcount=6
+phase11.target=600
+phase11.debug=false
+phase11.workload=com.yahoo.ycsb.workloads.HotspotWorkload
+phase11.requestdistribution=veryhotspot
+phase11.hotspots=20
+phase11.variance=0.01
+phase11.alpha=0.5
+
+phase12.index=12
+phase12.load=no
+phase12.operationcount=100000
+phase12.threadcount=5
+phase12.target=500
+phase12.debug=false
+phase12.workload=com.yahoo.ycsb.workloads.HotspotWorkload
+phase12.requestdistribution=zipfian
