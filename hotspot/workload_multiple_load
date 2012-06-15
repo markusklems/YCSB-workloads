@@ -13,7 +13,7 @@ hosts=127.0.0.1
 # how many "rowkeys" should be inserted into the database
 # each rowkey contains 10 "columns"
 # recordcount defines, how many times the doInsert() [HotspotWorkload] will be invoked
-recordcount=100
+recordcount=1000000
 
 # readallfields=true --> read all key/value pairs within a row key
 # readallfields=false --> read only one key/value pair within a row key
@@ -61,7 +61,7 @@ phase1.index=1
 phase1.load=yes
 
 #phase1.recordcount=100
-phase1.operationcount=100
+phase1.operationcount=1000000
 phase1.threadcount=5
 
 # ratios of opration types within the total benchmark
