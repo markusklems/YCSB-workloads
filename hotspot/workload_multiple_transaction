@@ -13,7 +13,7 @@ hosts=127.0.0.1
 # how many "rowkeys" should be inserted into the database
 # each rowkey contains 10 "columns"
 # recordcount defines, how many times the doInsert() [HotspotWorkload] will be invoked
-recordcount=100
+recordcount=1000000
 
 # readallfields=true --> read all key/value pairs within a row key
 # readallfields=false --> read only one key/value pair within a row key
@@ -47,8 +47,18 @@ chartPath=/home/lehoanganh
 # MULTIPLE PHASES
 # =============================================== #
 
+# global parameters
+
+readproportion=0.5
+updateproportion=0.5
+scanproportion=0
+insertproportion=0
+
+# Workload Executor
+workload=com.yahoo.ycsb.workloads.HotspotWorkload
+
 # how many phases
-phases=2
+phases=10
 
 # ******** #
 # PHASE 1  #
@@ -60,23 +70,17 @@ phase1.index=1
 # load=no --> transaction phase
 phase1.load=no
 
-phase1.recordcount=100
-phase1.operationcount=1000
+#phase1.recordcount=100
+phase1.operationcount=1000000
 phase1.threadcount=5
-
-# ratios of opration types within the total benchmark
-# summarize of all ratios = 1.0 (100%)
-phase1.readproportion=1.0
-phase1.updateproportion=0
-phase1.scanproportion=0
-phase1.insertproportion=0
+phase1.target=500
 
 # debug=true --> verbose info
 # debug=false --> compact info
 phase1.debug=false
 
 # Workload Executor
-phase1.workload=com.yahoo.ycsb.workloads.HotspotWorkload
+#phase1.workload=com.yahoo.ycsb.workloads.HotspotWorkload
 
 # request distribution model
 phase1.requestdistribution=zipfian
@@ -91,23 +95,13 @@ phase2.index=2
 # load=no --> transaction phase
 phase2.load=no
 
-phase2.recordcount=100
-phase2.operationcount=1000
-phase1.threadcount=10
-
-# ratios of opration types within the total benchmark
-# summarize of all ratios = 1.0 (100%)
-phase2.readproportion=1.0
-phase2.updateproportion=0
-phase2.scanproportion=0
-phase2.insertproportion=0
+phase2.operationcount=100000
+phase2.threadcount=5
+phase2.target=500
 
 # debug=true --> verbose info
 # debug=false --> compact info
 phase2.debug=false
-
-# Workload Executor
-phase2.workload=com.yahoo.ycsb.workloads.HotspotWorkload
 
 # request distribution model
 phase2.requestdistribution=veryhotspot
@@ -128,3 +122,41 @@ phase2.variance=0.01
 # low alpha --> small chance to take a new cluster
 # big alpha --> big chance to take a new cluster
 phase2.alpha=0.5
+
+# ******** #
+# PHASE 3  #
+# ******** #
+# used for bar chart
+phase3.index=3
+
+# load=yes --> loading phase
+# load=no --> transaction phase
+phase3.load=no
+
+phase3.operationcount=100000
+phase3.threadcount=6
+phase3.target=600
+
+# debug=true --> verbose info
+# debug=false --> compact info
+phase3.debug=false
+
+# request distribution model
+phase3.requestdistribution=veryhotspot
+
+# parameters for hotspot distribution
+
+# how many hotspots
+phase3.hotspots=20
+
+# variance of hotspots which is used for the Dirichlet distribution
+# low variance --> All hotspots have equally popularities (entropy ~1)
+# high variace --> Some hotspots have dominated popularities (entropy ~0)
+phase3.variance=0.01
+
+# concentration parameter alpha which is used for the Chinese Restaurant Process
+# 0 < alpha < 1
+# alpha defines how likely a hotspot takes a new cluster
+# low alpha --> small chance to take a new cluster
+# big alpha --> big chance to take a new cluster
+phase3.alpha=0.5
