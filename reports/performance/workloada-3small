@@ -1,0 +1,9 @@
+YCSB Client 0.1
+Command line: -db com.yahoo.ycsb.db.CassandraClient10 -P /usr/local/ycsb-0.1.4/workloads/performance/workloada-3small -t
+com.yahoo.ycsb.DBException: Required property "hosts" missing for CassandraClient
+	at com.yahoo.ycsb.db.CassandraClient10.init(CassandraClient10.java:91)
+	at com.yahoo.ycsb.DBWrapper.init(DBWrapper.java:63)
+	at com.yahoo.ycsb.ClientThread.run(Client.java:224)
+[OVERALL], RunTime(ms), 1.0
+[OVERALL], Throughput(ops/sec), 0.0
+java -cp /usr/local/ycsb-0.1.4/jdbc-binding/conf:/usr/local/ycsb-0.1.4/cassandra-binding/lib/cassandra-binding-0.1.4.jar:/usr/local/ycsb-0.1.4/gemfire-binding/conf:/usr/local/ycsb-0.1.4/core/lib/core-0.1.4.jar:/usr/local/ycsb-0.1.4/hbase-binding/conf:/usr/local/ycsb-0.1.4/voldemort-binding/conf:/usr/local/ycsb-0.1.4/infinispan-binding/conf com.yahoo.ycsb.Client -db com.yahoo.ycsb.db.CassandraClient10 -P /usr/local/ycsb-0.1.4/workloads/performance/workloada-3small -t
