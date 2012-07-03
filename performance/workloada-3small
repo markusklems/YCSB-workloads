@@ -24,7 +24,7 @@
 
 recordcount=300000
 insertstart=0
-insertcount=3000000
+insertcount=300000
 operationcount=300000
 workload=com.yahoo.ycsb.workloads.CoreWorkload
 
