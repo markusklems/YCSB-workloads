@@ -37,3 +37,5 @@ insertproportion=0
 
 requestdistribution=zipfian
 
+
+hosts=10.255.130.117,10.193.135.177,10.254.82.191
