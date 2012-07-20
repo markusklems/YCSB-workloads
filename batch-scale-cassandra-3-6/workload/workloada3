@@ -30,4 +30,4 @@ requestdistribution=zipfian
 
 measurementtype=timeseries
 timeseries.granularity=15000
-hosts=10.208.215.51
+hosts=10.248.98.162
